@@ -2,6 +2,9 @@ CREATE TABLE default_excluded AS FROM read_json('d_default_excluded.jsonl');
 
 SELECT improve_things FROM default_excluded WHERE improve_things NOT NULL;
 SELECT bad_things FROM default_excluded WHERE bad_things NOT NULL;
+
+-- SELECT faction, COUNT(faction) FROM default_excluded WHERE contains(default_bad_ids,1) GROUP BY faction;
+
 --  EXCLUDE (happy_things, time_mark) bad_things 
 
 -- CREATE TEMPORARY TABLE standard_bad (
