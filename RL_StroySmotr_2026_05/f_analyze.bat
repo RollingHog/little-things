@@ -1,1 +1,2 @@
-duckdb -init g_further.sql -no-stdin 
+duckdb -init g_further.sql 
+@REM -no-stdin 

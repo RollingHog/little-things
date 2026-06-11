@@ -1,5 +1,7 @@
-SELECT improve_things FROM read_json('d_default_excluded.jsonl') WHERE improve_things NOT NULL;
-SELECT bad_things FROM read_json('d_default_excluded.jsonl') WHERE bad_things NOT NULL;
+CREATE TABLE default_excluded AS FROM read_json('d_default_excluded.jsonl');
+
+SELECT improve_things FROM default_excluded WHERE improve_things NOT NULL;
+SELECT bad_things FROM default_excluded WHERE bad_things NOT NULL;
 --  EXCLUDE (happy_things, time_mark) bad_things 
 
 -- CREATE TEMPORARY TABLE standard_bad (
