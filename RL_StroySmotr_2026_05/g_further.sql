@@ -1,4 +1,5 @@
-CREATE TABLE default_excluded AS FROM read_json('d_default_excluded.jsonl');
+.mode line
+CREATE TABLE default_excluded AS FROM read_json('e_hand_edit.jsonl');
 
 SELECT improve_things FROM default_excluded WHERE improve_things NOT NULL;
 SELECT bad_things FROM default_excluded WHERE bad_things NOT NULL;
