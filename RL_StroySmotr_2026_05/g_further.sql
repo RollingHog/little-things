@@ -1,16 +1,5 @@
 CREATE TABLE default_excluded AS FROM read_json('e_hand_edit.jsonl');
 
--- -- summary for all factions
--- SELECT 
---     -- faction,
---     bad_digit,
---     COUNT(*) as count
--- FROM default_excluded,
--- UNNEST(default_bad_ids) AS bad_digit
--- -- faction,
--- GROUP BY bad_digit
--- ORDER BY count DESC;
-
 CREATE TABLE bad_digit_names (
     digit INTEGER PRIMARY KEY,
     name VARCHAR(255) NOT NULL
@@ -27,20 +16,41 @@ INSERT INTO bad_digit_names (digit, name) VALUES
       (9, 'Мало монстры или Боевикам не с кем воевать'),
       (10, 'Я не понял что делать');
 
--- percents for each faction with decoded digits
+-- -- summary for all experiences
+-- WITH all_data AS (
+--     SELECT 
+--         experience,
+--         UNNEST(default_bad_ids) AS digit
+--     FROM default_excluded
+-- )
+-- SELECT 
+--     -- a.experience,
+--     dn.name as digit_name,
+--     -- a.digit,
+--     COUNT(*) as count,
+--     -- ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (PARTITION BY a.experience), 2) as percentage_in_field
+-- FROM all_data a
+-- JOIN bad_digit_names dn ON a.digit = dn.digit
+-- GROUP BY dn.name, a.digit
+-- ORDER BY count DESC;
+
+-- percents for each experience with decoded digits
 WITH all_data AS (
     SELECT 
-        faction,
+        experience,
         UNNEST(default_bad_ids) AS digit
     FROM default_excluded
 )
 SELECT 
-    a.faction,
+    a.experience,
     dn.name as digit_name,
     -- a.digit,
     COUNT(*) as count,
-    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (PARTITION BY a.faction), 2) as percentage_in_field
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (PARTITION BY a.experience), 2) as percentage_in_field
 FROM all_data a
 JOIN bad_digit_names dn ON a.digit = dn.digit
-GROUP BY a.faction, dn.name, a.digit
-ORDER BY a.faction, count DESC;
+GROUP BY a.experience, dn.name, a.digit
+ORDER BY a.experience, count DESC;
+
+-- select faction, bad_things from default_excluded where bad_things IS NOT NULL;
+-- select faction, improve_things from default_excluded where improve_things IS NOT NULL;
